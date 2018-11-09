@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
+// const axios = require("axios");
 
 const { isLoggedIn } = require('../helpers/middlewares');
 
@@ -14,6 +15,11 @@ router.get('/me', (req, res, next) => {
       error: 'not-found'
     });
   }
+  // axios.get('https://api.brewerydb.com/v2/beers?key=1ff4f5a771c204dd18912e145d2e13ac')
+  //   .then((response) => {
+  //     console.log(response.data);
+      
+  //   })
 });
 
 router.post('/login', (req, res, next) => {
@@ -95,7 +101,7 @@ router.post('/logout', (req, res) => {
   return res.status(204).send();
 });
 
-router.get('/private', isLoggedIn(), (req, res, next) => {
+router.get('/home', isLoggedIn(), (req, res, next) => {
   res.status(200).json({
     message: 'This is a private message'
   });
