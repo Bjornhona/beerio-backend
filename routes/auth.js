@@ -15,11 +15,6 @@ router.get('/me', (req, res, next) => {
       error: 'not-found'
     });
   }
-  // axios.get('https://api.brewerydb.com/v2/beers?key=1ff4f5a771c204dd18912e145d2e13ac')
-  //   .then((response) => {
-  //     console.log(response.data);
-      
-  //   })
 });
 
 router.post('/login', (req, res, next) => {
