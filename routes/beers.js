@@ -64,7 +64,7 @@ router.put('/', (req, res, next) => {
       }
       user.save()
       .then((user) => {
-        // res.status(200).json({ message: 'update' });
+        res.status(200).json({ message: 'update' });
       })
       .catch(next)
     })
