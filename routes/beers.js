@@ -18,22 +18,23 @@ router.get('/', (req, res, next) => {
     })
     .catch((error) => {
     })
-  })
+})
 
-  router.get('/favorites'), (req, res, next) => {
-    const userId = req.session.currentUser._id;
-  
-    User.findById(userId)
-      .then((user) => {
-        console.log(user.favorites)
-        return res.status(200).json(user.favorites);
-      })
-      .catch((error) => {
-        next(error);
-      })
-  }
+router.get('/favorites', (req, res, next) => {
+  console.log('Favorites går');
+  const userId = req.session.currentUser._id;
 
-  router.get('/:id', (req, res, next) => {
+  User.findById(userId)
+    .then((user) => {
+      console.log(user.favorites)
+      return res.status(200).json(user.favorites);
+    })
+    .catch((error) => {
+      next(error);
+    })
+})
+
+router.get('/:id', (req, res, next) => {
   const id = req.params.id;
   axios.get(`https://api.brewerydb.com/v2/beer/${id}?key=1ff4f5a771c204dd18912e145d2e13ac`)
     .then((result) => {
@@ -45,8 +46,8 @@ router.get('/', (req, res, next) => {
     })
 })
 
+
 router.put('/', (req, res, next) => {
-  console.log(req.session.id)
   const { id, name, isOrganic, icon } = req.body;
   const userId = req.session.currentUser._id;
 
@@ -63,16 +64,11 @@ router.put('/', (req, res, next) => {
       }
       user.save()
       .then((user) => {
-        console.log(user);
-        // res.status(200).json({ message: 'update' });
+        res.status(200).json({ message: 'update' });
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch(next)
     })
-    .catch((error) => {
-      console.log(error);
-    })
+    .catch(next)
 })
 
 // router.put('/webdevs/:id', (req, res, next) => {
