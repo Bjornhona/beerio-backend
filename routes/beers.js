@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const User = require('../models/user');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 router.get('/', (req, res, next) => {
   axios.get('https://api.brewerydb.com/v2/beers?key=1ff4f5a771c204dd18912e145d2e13ac')
@@ -20,6 +22,18 @@ router.get('/', (req, res, next) => {
     })
 })
 
+router.get('/recommended', (req, res, next) => {
+  axios.get('https://api.brewerydb.com/v2/beers?key=1ff4f5a771c204dd18912e145d2e13ac')
+  .then((result) => {
+    result = result.data.data.filter((item) => {
+      return item.hasOwnProperty("labels");
+    })
+    return res.json(result);
+  })
+  .catch((error) => {
+  })
+})
+
 router.get('/favorites', (req, res, next) => {
   const userId = req.session.currentUser._id;
 
@@ -34,8 +48,12 @@ router.get('/favorites', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const id = req.params.id;
+
   axios.get(`https://api.brewerydb.com/v2/beer/${id}?key=1ff4f5a771c204dd18912e145d2e13ac`)
     .then((result) => {
+      if (Object.keys(result).length === 0 && result.constructor === Object) {
+        return res.status(404).json({ code: 'not-found' })
+      }
       const data = result.data.data;
       return res.status(200).json(data)
     })
