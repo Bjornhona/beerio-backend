@@ -48,12 +48,12 @@ router.get('/favorites', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const id = req.params.id;
-  if (!id || !ObjectId.isValid(id)) {
-    return res.status(404).json({code: "not-found"});
-  }
 
   axios.get(`https://api.brewerydb.com/v2/beer/${id}?key=1ff4f5a771c204dd18912e145d2e13ac`)
     .then((result) => {
+      if (Object.keys(result).length === 0 && result.constructor === Object) {
+        return res.status(404).json({ code: 'not-found' })
+      }
       const data = result.data.data;
       return res.status(200).json(data)
     })
