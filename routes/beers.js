@@ -21,12 +21,10 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/favorites', (req, res, next) => {
-  console.log('Favorites går');
   const userId = req.session.currentUser._id;
 
   User.findById(userId)
     .then((user) => {
-      console.log(user.favorites)
       return res.status(200).json(user.favorites);
     })
     .catch((error) => {
@@ -45,7 +43,6 @@ router.get('/:id', (req, res, next) => {
       next(error);
     })
 })
-
 
 router.put('/', (req, res, next) => {
   const { id, name, isOrganic, icon } = req.body;
@@ -70,22 +67,5 @@ router.put('/', (req, res, next) => {
     })
     .catch(next)
 })
-
-// router.put('/webdevs/:id', (req, res, next) => {
-//   const { id } = req.params;
-//   const webdevToUpdate = {
-//     title: req.body.title,
-//     text: req.body.text,
-//     image: req.body.image || '',
-//   };
-
-//   WebDev.findByIdAndUpdate(id, webdevToUpdate, (err) => {
-//     if (err) {
-//       next(err);
-//     } else {
-//       res.status(200).json({ message: 'updated' });
-//     }
-//   });
-// });
 
 module.exports = router;
