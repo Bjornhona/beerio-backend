@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const axios = require('axios');
 const User = require('../models/user');
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
 
 router.get('/', (req, res, next) => {
   axios.get('https://api.brewerydb.com/v2/beers?key=1ff4f5a771c204dd18912e145d2e13ac')
@@ -13,13 +10,8 @@ router.get('/', (req, res, next) => {
         return item.hasOwnProperty("labels");
       })
       return res.json(result)
-      // if (!error && result.statusCode === 200) {
-        
-      //   return res.json(result);
-      // }
     })
-    .catch((error) => {
-    })
+    .catch(next)
 })
 
 router.get('/recommended', (req, res, next) => {
@@ -30,8 +22,7 @@ router.get('/recommended', (req, res, next) => {
     })
     return res.json(result);
   })
-  .catch((error) => {
-  })
+  .catch(next)
 })
 
 router.get('/favorites', (req, res, next) => {
@@ -41,9 +32,7 @@ router.get('/favorites', (req, res, next) => {
     .then((user) => {
       return res.status(200).json(user.favorites);
     })
-    .catch((error) => {
-      next(error);
-    })
+    .catch(next)
 })
 
 router.get('/:id', (req, res, next) => {
@@ -57,9 +46,7 @@ router.get('/:id', (req, res, next) => {
       const data = result.data.data;
       return res.status(200).json(data)
     })
-    .catch((error) => {
-      next(error);
-    })
+    .catch(next)
 })
 
 router.put('/', (req, res, next) => {
