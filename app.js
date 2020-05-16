@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
+const favicon = require('beerio-icon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -17,21 +17,23 @@ const beers = require('./routes/beers');
 mongoose.connect(process.env.MONGODB_URI, {
   keepAlive: true,
   useNewUrlParser: true,
-  reconnectTries: Number.MAX_VALUE
+  // reconnectTries: Number.MAX_VALUE,
+  useUnifiedTopology: true
 }).then(() => {
   console.log(`Connected to database`);
 }).catch((error) => {
   console.error(error);
 })
 
-
 const app = express();
+
+app.use(favicon(__dirname + '/public/favicon.ico'));
+// app.use(favicon(__dirname + '/build/favicon.ico'));
 
 app.use(cors({
   credentials: true,
   origin: [process.env.PUBLIC_DOMAIN]
 }));
-
 
 app.use(session({
   store: new MongoStore({

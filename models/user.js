@@ -8,7 +8,8 @@ const userSchema = new Schema({
     id: String,
     name: String,
     isOrganic: String,
-    icon: String
+    icon: String,
+    style: String
   }]
 }, {
   timestamps: {
